@@ -2,14 +2,17 @@
 import React from 'react';
 import { Home, Calendar, Activity, Bell, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navigation: React.FC = () => {
+  const location = useLocation();
+  
   const navItems = [
-    { icon: Home, label: 'Home', active: true },
-    { icon: Calendar, label: 'Journal' },
-    { icon: Activity, label: 'Activities' },
-    { icon: Bell, label: 'Reminders' },
-    { icon: User, label: 'Profile' },
+    { icon: Home, label: 'Home', path: '/' },
+    { icon: Calendar, label: 'Journal', path: '/journal' },
+    { icon: Activity, label: 'Activities', path: '/activities' },
+    { icon: Bell, label: 'Reminders', path: '/reminders' },
+    { icon: User, label: 'Profile', path: '/profile' },
   ];
 
   return (
@@ -17,19 +20,24 @@ const Navigation: React.FC = () => {
       <div className="flex justify-around items-center max-w-md mx-auto">
         {navItems.map((item, index) => {
           const Icon = item.icon;
+          const isActive = location.pathname === item.path;
+          
           return (
             <Button
               key={index}
               variant="ghost"
               size="sm"
+              asChild
               className={`flex flex-col items-center gap-1 p-2 h-auto ${
-                item.active
+                isActive
                   ? 'text-orange-500'
                   : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              <Icon className="h-4 w-4" />
-              <span className="text-xs">{item.label}</span>
+              <Link to={item.path}>
+                <Icon className="h-4 w-4" />
+                <span className="text-xs">{item.label}</span>
+              </Link>
             </Button>
           );
         })}
